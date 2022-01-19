@@ -12,7 +12,7 @@ interface IProps {
 const AuthLayout: FC<IProps> = ({ children, router }) => {
   const protectedRoutes = [
     '/dashboard',
-    '/dashboard/viewcontact/[pid]',
+    '/dashboard/viewcontact/[id]',
     '/dashboard/listcontacts',
     '/dashboard/addcontact',
     '/dashboard/settings',
