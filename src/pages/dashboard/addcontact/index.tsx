@@ -37,6 +37,11 @@ const AddContact: FC<IProps> = () => {
     await uploadBytes(storageRef, img)
     const url = await getDownloadURL(storageRef)
     if (url) {
+      toast.promise(resolveAfter3Sec, {
+        pending: 'Pending...',
+        success: 'Successful 👌',
+        error: 'Error 🤯',
+      })
       setImage(url)
     }
   }
@@ -126,7 +131,6 @@ const AddContact: FC<IProps> = () => {
           }}
           onSubmit={(values, { resetForm }) => {
             handleSubmit(values, resetForm)
-            // console.log(values)
           }}
         >
           {({ errors, touched, values, setFieldValue, handleBlur }) => (
@@ -142,6 +146,7 @@ const AddContact: FC<IProps> = () => {
                     margin-bottom: 10px;
                     display: flex;
                     flex-direction: column;
+                    cursor: pointer;
                   `}
                   htmlFor="image"
                 >

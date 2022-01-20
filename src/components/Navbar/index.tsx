@@ -8,15 +8,16 @@ import { FC } from 'react'
 interface IProps {}
 
 const WrapperStyled = styled.nav`
-  width: 226px;
-  height: 982px;
-  background: #fbfbfb;
+  width: 155px;
+  height: 92%;
+  /* background: #fbfbfb; */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 0 15px 15px 0;
   display: flex;
   flex-direction: column;
   position: fixed;
   top: 0;
-  padding: 40px 20px;
+  padding: 40px;
 `
 
 const Wrapper = styled.div`
