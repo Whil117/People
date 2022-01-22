@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 
 const LoginPage: NextPage = () => {
   const user = useSelector((state: Reducers) => state.user.user)
+  const resolveAfter3Sec = new Promise((resolve) => setTimeout(resolve, 3000))
   const dispatch = useDispatch()
   const handleSubmit = async (values: {
     username: string
@@ -28,7 +29,11 @@ const LoginPage: NextPage = () => {
               user: res.data.user,
             },
           })
-          // toast('Login Successful')
+          toast.promise(resolveAfter3Sec, {
+            pending: 'Pending...',
+            success: 'Logged Successful 👌',
+            error: 'Error 🤯',
+          })
           Cookie.set('token', res.data.token)
         }
       })

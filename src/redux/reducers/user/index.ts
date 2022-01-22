@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie'
+
 export const initialState = {
   authenticated: false,
   user: {
@@ -18,7 +20,10 @@ const TypeReducers = {
       user: action.payload.user,
     }
   },
-  LOGOUT: () => initialState,
+  LOGOUT: () => {
+    Cookies.remove('token')
+    return { ...initialState }
+  },
 }
 
 type Action = {
