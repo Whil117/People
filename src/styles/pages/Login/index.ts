@@ -18,6 +18,8 @@ export const AddTodoFormInput = styled(Field)`
   border: none;
   outline: none;
   width: ${({ width }: { width?: string }) => width || '88%'};
+  ${({ customstyle }: { customstyle?: SerializedStyles }) =>
+    customstyle && customstyle}
 `
 export const AddTodoFormInputImage = styled('input')`
   display: flex;
@@ -68,7 +70,7 @@ export const AddTodoFormSubmit = styled.button`
   font-size: 16px;
   font-weight: 600;
   color: #ffffff;
-  width: 450px;
+  /* width: 450px; */
   height: 30px;
   background: #66e32b;
   border-radius: 10px;

@@ -4,10 +4,10 @@ import { Iprops } from '@Types/components/layout/types'
 import { FC } from 'react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+
 const WrapperStyled = styled.div`
   display: flex;
   margin: 40px auto 100px 310px;
-  height: 100vh;
 `
 
 export const invalidPages = ['/', '/auth', '/register']

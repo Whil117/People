@@ -10,6 +10,7 @@ import { ChangeEvent, FC, useState } from 'react'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { css } from '@emotion/react'
 import Cookies from 'js-cookie'
+import Router from 'next/router'
 
 interface IProps {
   data: {
@@ -85,6 +86,7 @@ const ViewContact: FC<IProps> = ({ data }) => {
               ...values,
               image: contact.image,
             })
+            Router.push('/dashboard/listcontacts')
           }
         })
     } catch (error) {}

@@ -1,25 +1,26 @@
-export const init = {
-  name: '',
-  phone_number: '',
-  email: '',
-  address: '',
-  image: '',
+/* eslint-disable no-unused-vars */
+export type Client = {
+  id: string
+  name: string
+  phone_number: string
+  email: string
+  address: string
+  image: string
 }
 
-export type AddClientReducer = ReturnType<typeof reducer>
+export const init: Client[] = []
+
+export type Dashboard_clients = ReturnType<typeof reducer>
 
 const TypeReducers = {
-  ADD_FIELD: (state = init, action: Action) => ({
-    ...state,
-    [action.payload.key]: action.payload.value,
-  }),
+  UPDATE_CLIENTS: (_ = init, action: Action) => {
+    return action.payload
+  },
 }
 
 type Action = {
   type: keyof typeof TypeReducers
-  payload: {
-    [key: string]: string
-  }
+  payload: Client[]
 }
 
 export const reducer = (state = init, action: Action) => {
@@ -28,3 +29,4 @@ export const reducer = (state = init, action: Action) => {
   const newState = handler ? handler(state, action) : state
   return newState
 }
+export default reducer

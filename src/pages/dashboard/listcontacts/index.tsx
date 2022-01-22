@@ -6,12 +6,15 @@ import styled from '@emotion/styled'
 import { ButtonForm, Wrapper } from '@Styles/global'
 import { ContactItem } from '@Styles/pages/listcontacts'
 import { AddTodoFormInput } from '@Styles/pages/Login'
+import { Reducers } from '@Types/types'
 import axios from 'axios'
 import { Form, Formik } from 'formik'
 import Cookies from 'js-cookie'
 import { NextPageContext } from 'next'
 import Link from 'next/link'
-import { FC, useState } from 'react'
+import Router from 'next/router'
+import { FC, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
 type ContactItem = {
@@ -40,6 +43,12 @@ const ListContacts: FC<IProps> = ({ contacts }) => {
   const token = Cookies.get('token')
   const resolveAfter3Sec = new Promise((resolve) => setTimeout(resolve, 3000))
 
+  const dashboard_clients = useSelector(
+    (state: Reducers) => state.dashboard_clients
+  )
+
+  const dispatch = useDispatch()
+
   const handleDeleteListItem = async (id: string) => {
     setList(list.filter((item) => item.id !== id))
     try {
@@ -62,10 +71,19 @@ const ListContacts: FC<IProps> = ({ contacts }) => {
               success: 'Successful 👌',
               error: 'Error 🤯',
             })
+            Router.reload()
           }
         })
     } catch (error) {}
   }
+  useEffect(() => {
+    if (JSON.stringify(dashboard_clients) !== JSON.stringify(list)) {
+      dispatch({
+        type: 'UPDATE_CLIENTS',
+        payload: list,
+      })
+    }
+  }, [])
 
   return (
     <div>
@@ -105,7 +123,18 @@ const ListContacts: FC<IProps> = ({ contacts }) => {
                     }}
                     passHref
                   >
-                    <ContactItem key={item.id}>
+                    <ContactItem
+                      key={item.id}
+                      customstyle={css`
+                        cursor: normal;
+                        width: 411px;
+                        padding: 10px;
+                        margin: 10px 0;
+                        h3 {
+                          margin: 10px 0;
+                        }
+                      `}
+                    >
                       <AtomImage
                         src={item.image}
                         width={90}

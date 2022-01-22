@@ -4,7 +4,14 @@ import { combineReducers, createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistReducer, persistStore } from 'redux-persist'
 import user from '@Redux/reducers/user'
+import dashboard_projects from '@Redux/reducers/dashboard/reducer'
+import dashboard_clients from '@Redux/reducers/addclient'
+import dashboard_chats from '@Redux/reducers/dashboard/chat/reducer'
+
 const rootReducer = combineReducers({
+  dashboard_projects: dashboard_projects,
+  dashboard_clients: dashboard_clients,
+  dashboard_chats: dashboard_chats,
   user: user,
 })
 

@@ -9,6 +9,7 @@ import axios from 'axios'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { Form, Formik } from 'formik'
 import Cookies from 'js-cookie'
+import Router from 'next/router'
 import { ChangeEvent, FC, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -25,6 +26,7 @@ const FormClient = styled(Form)`
 const AddContact: FC<IProps> = () => {
   const [image, setImage] = useState<string | ArrayBuffer | null>('')
   const user = useSelector((state: Reducers) => state.user)
+
   const resolveAfter3Sec = new Promise((resolve) => setTimeout(resolve, 3000))
 
   const extractFile = (event: any) => {
@@ -94,6 +96,7 @@ const AddContact: FC<IProps> = () => {
               success: 'Successful 👌',
               error: 'Error 🤯',
             })
+            Router.push('/dashboard/listcontacts')
           }
         })
     } catch (error) {}

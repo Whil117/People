@@ -35,9 +35,19 @@ const options = [
     path: '/dashboard/addcontact',
   },
   {
-    name: 'All Clients',
+    name: 'List Clients',
     icon: 'listclient',
     path: '/dashboard/listcontacts',
+  },
+  {
+    name: 'React Email',
+    icon: 'email',
+    path: '/dashboard/messages',
+  },
+  {
+    name: 'Chat',
+    icon: 'message',
+    path: '/dashboard/chats',
   },
   {
     name: 'Settings',
