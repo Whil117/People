@@ -8,6 +8,9 @@
       "@Atoms/*": [
         "components/Atoms/*"
       ],
+      "@Whil/*": [
+        "lib/@Whil/*"
+      ],
       "@Auth/*": [
         "auth/*"
       ],

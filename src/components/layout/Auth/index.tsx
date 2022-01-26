@@ -2,8 +2,8 @@ import Redirect from '@Components/Redirect'
 import { Reducers } from '@Types/types'
 import Cookies from 'js-cookie'
 import { NextRouter } from 'next/router'
-import { FC } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { FC, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { invalidPages } from '../index'
 
 interface IProps {
@@ -25,19 +25,18 @@ const AuthLayout: FC<IProps> = ({ children, router }) => {
   const authethicated = useSelector(
     (state: Reducers) => state.user.authenticated
   )
-  const dispatch = useDispatch()
+  const [userValid, setUserValid] = useState(false)
 
-  if (
-    (!authethicated && protectedRoutes.includes(router.pathname)) ||
-    (authethicated && !Cookies.get('token'))
-  ) {
-    dispatch({
-      type: 'LOGOUT',
-    })
+  useEffect(() => {
+    const token = Cookies.get('token')
+    setUserValid(token ? true : false)
+  }, [authethicated])
+
+  if (!userValid && protectedRoutes.includes(router.pathname)) {
     return <Redirect {...{ router }} href="/" />
-  }
-
-  if (authethicated && invalidPages.includes(router.pathname)) {
+  } else if (!authethicated && protectedRoutes.includes(router.pathname)) {
+    return <Redirect {...{ router }} href="/" />
+  } else if (authethicated && invalidPages.includes(router.pathname)) {
     return <Redirect {...{ router }} href="/dashboard" />
   }
   return <>{children}</>

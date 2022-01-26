@@ -13,16 +13,16 @@ export const initialState = {
 
 export type UserReducer = ReturnType<typeof reducer>
 const TypeReducers = {
+  // eslint-disable-next-line no-unused-vars
   SIGNIN: (state = initialState, action: Action) => {
     return {
-      ...state,
       authenticated: true,
       user: action.payload.user,
     }
   },
   LOGOUT: () => {
     Cookies.remove('token')
-    return { ...initialState }
+    return initialState
   },
 }
 
@@ -44,6 +44,7 @@ const reducer = (state = initialState, action: Action) => {
   const { type } = action
   const handler = TypeReducers[type]
   const newState = handler ? handler(state, action) : state
+
   return newState
 }
 export default reducer

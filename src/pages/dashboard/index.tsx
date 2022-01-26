@@ -2,32 +2,30 @@
 import AtomImage from '@Atoms/Image'
 import SvgDynamic from '@Atoms/Svg'
 import { css } from '@emotion/react'
-import styled from '@emotion/styled'
 import { Column, Init } from '@Redux/reducers/dashboard/reducer'
-import { ButtonForm, Wrapper } from '@Styles/global'
-import { LabelDashboard } from '@Styles/pages/dashboard'
+import { Wrapper } from '@Styles/global'
 import { ContactItem } from '@Styles/pages/listcontacts'
-import { AddTodoFormError, AddTodoFormInput } from '@Styles/pages/Login'
 import { Reducers } from '@Types/types'
 import idAssignment from '@Utils/id'
-import { Form, Formik } from 'formik'
+import Button from '@Whil/components/Button'
+import Formk from '@Whil/components/Form'
+import {
+  ArcElement,
+  Chart as ChartJS,
+  Filler,
+  Legend,
+  LineElement,
+  PointElement,
+  RadialLinearScale,
+  Tooltip,
+} from 'chart.js'
 import Link from 'next/link'
 import { FC, useState } from 'react'
+import { Doughnut, PolarArea, Radar } from 'react-chartjs-2'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-} from 'chart.js'
-import { Doughnut, Radar } from 'react-chartjs-2'
 
-ChartJS.register(ArcElement, Tooltip, Legend)
 ChartJS.register(
+  ArcElement,
   RadialLinearScale,
   PointElement,
   LineElement,
@@ -35,13 +33,6 @@ ChartJS.register(
   Tooltip,
   Legend
 )
-
-const FormClient = styled(Form)`
-  display: flex;
-  flex-direction: column;
-  height: 300px;
-  justify-content: space-between;
-`
 
 interface IProps {}
 
@@ -89,6 +80,22 @@ const Dashboard: FC<IProps> = () => {
       },
     ],
   }
+  const dataFormProject = [
+    {
+      name: 'title',
+      as: 'input',
+      id: 'title',
+      placeholder: 'Title',
+      style: { margin: '10px 0' },
+    },
+    {
+      name: 'description',
+      as: 'input',
+      id: 'description',
+      placeholder: 'Description',
+      style: { margin: '10px 0' },
+    },
+  ]
 
   return (
     <Wrapper
@@ -143,109 +150,49 @@ const Dashboard: FC<IProps> = () => {
           ))}
         </Wrapper>
         {show ? (
-          <Formik
-            initialValues={{ title: '', description: '' }}
-            validate={(validate) => {
-              const errors: any = {}
-              if (!validate.title) {
-                errors.title = 'Title is required'
-              }
-              if (!validate.description) {
-                errors.description = 'Description is required'
-              }
-              return errors
-            }}
-            onSubmit={(values, { resetForm }) => {
-              dispatch({
-                type: 'ADD_PROJECT',
-                payload: {
-                  id: idAssignment(40),
-                  title: values.title,
-                  description: values.description,
-                },
-              })
-              resetForm()
-            }}
-          >
-            {({ errors, touched }) => (
-              <FormClient>
-                <Wrapper
-                  customstyle={css`
-                    width: 100%;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                  `}
-                >
-                  <h2>Add new project</h2>
-                  <ButtonForm
-                    customstyle={css`
-                      border: none;
-                      background: none;
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                    `}
-                    onClick={() => setShow(false)}
-                  >
-                    <SvgDynamic href="/icons/cancel" />
-                  </ButtonForm>
-                </Wrapper>
-                <LabelDashboard>
-                  Title
-                  <AddTodoFormInput name="title" placeholder="title" />
-                  {errors.title && touched.title && (
-                    <AddTodoFormError>{errors.title}</AddTodoFormError>
-                  )}
-                </LabelDashboard>
-                <LabelDashboard>
-                  Description
-                  <AddTodoFormInput
-                    name="description"
-                    placeholder="description"
-                  />
-                  {errors.description && touched.description && (
-                    <AddTodoFormError>{errors.description}</AddTodoFormError>
-                  )}
-                </LabelDashboard>
-                <ButtonForm
-                  customstyle={css`
-                    border: none;
-                    width: 100%;
-                    height: 35px;
-                    background: #1e90ff;
-                    color: white;
-                    font-weight: 600;
-                    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
-                    border-radius: 5px;
-                    width: 100%;
-                  `}
-                  type="submit"
-                >
-                  Add Project
-                </ButtonForm>
-              </FormClient>
-            )}
-          </Formik>
+          <>
+            <Wrapper
+              customstyle={css`
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              `}
+            >
+              <h2>Add new project</h2>
+              <Button
+                props={{ type: 'default', style: { boxshadow: '0px' } }}
+                click={() => setShow(false)}
+              >
+                <SvgDynamic href="/icons/cancel" />
+              </Button>
+            </Wrapper>
+            <Formk
+              arr={dataFormProject}
+              submit={(values, resetForm) => {
+                dispatch({
+                  type: 'ADD_PROJECT',
+                  payload: {
+                    id: idAssignment(40),
+                    title: values.title,
+                    description: values.description,
+                  },
+                })
+                setShow(false)
+                resetForm()
+              }}
+            />
+          </>
         ) : (
-          <ButtonForm
-            customstyle={css`
-              border: none;
-              width: 100%;
-              height: 35px;
-              background: #1e90ff;
-              color: white;
-              font-weight: 600;
-              box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
-              border-radius: 5px;
-              width: 100%;
-              margin: 30px 0;
-            `}
-            type="submit"
-            onClick={() => setShow(!show)}
+          <Button
+            props={{
+              type: 'add',
+              style: { boxshadow: '0px' },
+            }}
+            click={() => setShow(!show)}
           >
             Add Project
-          </ButtonForm>
+          </Button>
         )}
       </Wrapper>
       <Wrapper>
@@ -262,6 +209,7 @@ const Dashboard: FC<IProps> = () => {
             >
               <Doughnut data={data} />
               <Radar data={data2} />
+              <PolarArea data={data} />
             </Wrapper>
           </Wrapper>
         </Wrapper>
