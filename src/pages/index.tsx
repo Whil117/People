@@ -11,7 +11,7 @@ import { toast } from 'react-toastify'
 
 const LoginPage: NextPage = () => {
   const dispatch = useDispatch()
-  const handleSubmit = async (values: { [x: string]: string }) => {
+  const handleSubmit = async (values: { [x: string]: string | File }) => {
     await axios
       .post(`${baseUrl}/signin`, values)
       .then((res) => {
