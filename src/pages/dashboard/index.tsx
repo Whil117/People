@@ -1,10 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
-import AtomImage from '@Atoms/Image'
 import SvgDynamic from '@Atoms/Svg'
+import Card from '@Components/Contact'
+import Information from '@Components/Contact/Information'
 import { css } from '@emotion/react'
 import { Column, Init } from '@Redux/reducers/dashboard/reducer'
 import { Wrapper } from '@Styles/global'
-import { ContactItem } from '@Styles/pages/listcontacts'
 import { Reducers } from '@Types/types'
 import idAssignment from '@Utils/id'
 import Button from '@Whil/components/Button'
@@ -130,22 +130,18 @@ const Dashboard: FC<IProps> = () => {
               }}
               passHref
             >
-              <ContactItem
-                key={`projects-id=${item.id}`}
-                customstyle={css`
-                  display: flex;
-                  flex-direction: column;
-                  padding: 10px;
-                  width: 281px;
-                  height: 80px;
-                  h3 {
-                    margin: 10px 0;
-                  }
-                `}
-              >
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </ContactItem>
+              <a>
+                <Information
+                  item={{ title: item.title, text: item.description }}
+                  styles={{
+                    width: '300px',
+                    padding: '10px',
+                    margin: '10px 0',
+                    justifycontent: 'flex-start',
+                    alignitems: 'stretch',
+                  }}
+                />
+              </a>
             </Link>
           ))}
         </Wrapper>
@@ -225,33 +221,7 @@ const Dashboard: FC<IProps> = () => {
             {dashboard_clients
               .filter((client, index) => index > dashboard_clients.length - 4)
               .map((item) => (
-                <ContactItem
-                  key={item.id}
-                  customstyle={css`
-                    cursor: normal;
-                    width: 360px;
-                    padding: 10px;
-                    margin: 10px 10px;
-                    h3 {
-                      margin: 10px 0;
-                    }
-                  `}
-                >
-                  <AtomImage
-                    src={item.image || 'https://via.placeholder.com/300x300'}
-                    width={90}
-                    height={90}
-                    alt={item.name}
-                  />
-                  <Wrapper
-                    customstyle={css`
-                      margin-left: 20px;
-                    `}
-                  >
-                    <h3>{item.name.slice(0, 25)}</h3>
-                    <p>{item.address.slice(0, 25)}</p>
-                  </Wrapper>
-                </ContactItem>
+                <Card key={item.id} {...{ item }} />
               ))}
             {dashboard_clients.length === 0 && <p>You don't have contacts </p>}
           </Wrapper>

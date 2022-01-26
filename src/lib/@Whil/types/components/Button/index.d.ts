@@ -1,6 +1,6 @@
 import Styles from '@Whil/types/styles'
 
-type ButtonType = 'default' | 'submit' | 'add' | 'danger' | 'warning'
+export type ButtonType = 'default' | 'submit' | 'add' | 'danger' | 'warning'
 
 interface ButtonProps {
   props: {

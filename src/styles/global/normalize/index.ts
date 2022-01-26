@@ -29,6 +29,7 @@ const Normalize = css`
     font-size: 1em; /* 2 */
   }
   a {
+    text-decoration: none;
     background-color: transparent;
   }
   abbr[title] {

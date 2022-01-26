@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { Button } from '@Whil/styles/components/Button'
 import colors from '@Whil/styles/global/colors'
-import Styles from '@Whil/types/styles'
 import { Form, Formik, FormikState } from 'formik'
-import { FC } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
+import Div from '../Div'
+import Image from '../Image'
 import Input from '../Input'
+import Label from '../Label'
 import P from '../P'
 
 type arrProps = {
@@ -18,7 +20,7 @@ interface IProps {
   buttonMessage?: string
   arr: arrProps[]
   submit: (
-    values: { [x: string]: string },
+    values: { [x: string]: string | File },
     resetForm: (
       nextState?:
         | Partial<
@@ -29,19 +31,75 @@ interface IProps {
         | undefined
     ) => void
   ) => void
+  arrImages?: arrProps[]
 }
 
-const Formk: FC<IProps> = ({ arr, submit, buttonMessage }) => {
+const Formk: FC<IProps> = ({ arr, submit, buttonMessage, arrImages }) => {
+  const [gallery, setGallery] = useState<{
+    [x: string]: string | ArrayBuffer | null
+  }>({})
+  const extractFile = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0]
+    return file
+  }
+
+  const handleImage = (
+    event: ChangeEvent<HTMLInputElement>,
+    setFieldValue: (
+      field: string,
+      value: any,
+      shouldValidate?: boolean | undefined
+    ) => void,
+    name: string
+  ) => {
+    const image = extractFile(event)
+    const reader = new FileReader()
+    if (image) {
+      reader.onloadend = (event) => {
+        if (event.target) {
+          setGallery({
+            ...gallery,
+            [name]: event.target.result,
+          })
+          setFieldValue(name, image)
+        }
+      }
+      reader.readAsDataURL(image as Blob)
+    }
+  }
   return (
     <Formik
       initialValues={arr
-        .map((item) => ({
-          [item.name]: '',
-        }))
+        .map((arrItem) => {
+          if (arrImages) {
+            const imagesdata = arrImages
+              ?.map((item) => {
+                return {
+                  [item.name]: '',
+                }
+              })
+              .reduce((acc, curr) => {
+                return { ...acc, ...curr }
+              }, {})
+
+            return {
+              ...imagesdata,
+              [arrItem.name]: '',
+            }
+          }
+          return {
+            [arrItem.name]: '',
+          }
+        })
         .reduce((acc, curr) => ({ ...acc, ...curr }), {})}
       validate={(values) => {
         const errors: { [key: string]: string } = {}
         arr.forEach((item) => {
+          if (!values[item.name]) {
+            errors[item.name] = `${item.name} is required`
+          }
+        })
+        arrImages?.forEach((item) => {
           if (!values[item.name]) {
             errors[item.name] = `${item.name} is required`
           }
@@ -52,7 +110,7 @@ const Formk: FC<IProps> = ({ arr, submit, buttonMessage }) => {
         submit(values, resetForm)
       }}
     >
-      {({ errors, touched }) => (
+      {({ values, errors, touched, setFieldValue, handleBlur }) => (
         <Form>
           {arr.map((input) => (
             <label htmlFor={input.id} key={input.id}>
@@ -72,6 +130,48 @@ const Formk: FC<IProps> = ({ arr, submit, buttonMessage }) => {
               )}
             </label>
           ))}
+          {arrImages &&
+            arrImages.map((item) => (
+              <Div
+                key={item.id}
+                styles={{ boxshadow: 'a', alignitems: 'flex-start' }}
+              >
+                <P styles={{ margin: '10px 0' }}>{item.name}</P>
+                {gallery[item.name] && (
+                  <Image
+                    src={gallery[item.name] || ''}
+                    alt={item.name}
+                    width={320}
+                    height={320}
+                    styles={{ margin: '50px', borderRadius: '10px' }}
+                  />
+                )}
+                <input
+                  key={`image_${item.id}`}
+                  id={item.id}
+                  name={item.name}
+                  type="file"
+                  onBlur={handleBlur}
+                  onChange={(event) => {
+                    if (event.currentTarget.files) {
+                      handleImage(event, setFieldValue, item.name)
+                    }
+                  }}
+                  style={{ display: 'none' }}
+                />
+                <Label
+                  to={item.id}
+                  props={{ type: 'add', style: { margin: '10px 0' } }}
+                >
+                  {item.id}
+                </Label>
+                {errors[item.name] && touched[item.name] && (
+                  <P styles={{ color: colors.danger, fontWeight: '600' }}>
+                    {errors[item.name]}
+                  </P>
+                )}
+              </Div>
+            ))}
           <Button props={{ type: 'submit', style: { margin: '10px 0' } }}>
             {buttonMessage || 'Confirm'}
           </Button>
