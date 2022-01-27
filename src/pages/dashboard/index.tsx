@@ -8,6 +8,7 @@ import { Wrapper } from '@Styles/global'
 import { Reducers } from '@Types/types'
 import idAssignment from '@Utils/id'
 import Button from '@Whil/components/Button'
+import Div from '@Whil/components/Div'
 import Formk from '@Whil/components/Form'
 import {
   ArcElement,
@@ -98,136 +99,138 @@ const Dashboard: FC<IProps> = () => {
   ]
 
   return (
-    <Wrapper
-      customstyle={css`
-        display: flex;
-      `}
-    >
+    <Div styles={{ alignitems: 'flex-start', boxshadow: 'a' }}>
       <Wrapper
         customstyle={css`
-          width: 350px;
-          margin-right: 50px;
+          display: flex;
         `}
       >
-        <h1>Dashboard</h1>
         <Wrapper
           customstyle={css`
-            ${dashboard_projects.length > 3 &&
-            css`
-              overflow-y: scroll;
-              overflow-x: hidden;
-              padding: 0 0 0 8px;
-              height: 500px;
-            `}
+            width: 350px;
+            margin-right: 50px;
           `}
         >
-          {dashboard_projects.map((item: Init) => (
-            <Link
-              key={item.id}
-              href={{
-                pathname: '/dashboard/view/project/[id]',
-                query: { id: item.id },
-              }}
-              passHref
-            >
-              <a>
-                <Information
-                  item={{ title: item.title, text: item.description }}
-                  styles={{
-                    width: '300px',
-                    padding: '10px',
-                    margin: '10px 0',
-                    justifycontent: 'flex-start',
-                    alignitems: 'stretch',
-                  }}
-                />
-              </a>
-            </Link>
-          ))}
-        </Wrapper>
-        {show ? (
-          <>
-            <Wrapper
-              customstyle={css`
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-              `}
-            >
-              <h2>Add new project</h2>
-              <Button
-                props={{ type: 'default', style: { boxshadow: '0px' } }}
-                click={() => setShow(false)}
-              >
-                <SvgDynamic href="/icons/cancel" />
-              </Button>
-            </Wrapper>
-            <Formk
-              arr={dataFormProject}
-              submit={(values, resetForm) => {
-                dispatch({
-                  type: 'ADD_PROJECT',
-                  payload: {
-                    id: idAssignment(40),
-                    title: values.title,
-                    description: values.description,
-                  },
-                })
-                setShow(false)
-                resetForm()
-              }}
-            />
-          </>
-        ) : (
-          <Button
-            props={{
-              type: 'add',
-              style: { boxshadow: '0px' },
-            }}
-            click={() => setShow(!show)}
-          >
-            Add Project
-          </Button>
-        )}
-      </Wrapper>
-      <Wrapper>
-        <h1>Welcome {user.user.username}!</h1>
-        <Wrapper>
-          <h2>About</h2>
-          <Wrapper>
-            <h3>Active Projects</h3>
-            <Wrapper
-              customstyle={css`
-                display: flex;
-                width: 400px;
-              `}
-            >
-              <Doughnut data={data} />
-              <Radar data={data2} />
-              <PolarArea data={data} />
-            </Wrapper>
-          </Wrapper>
-        </Wrapper>
-        <Wrapper>
-          <h2>Updated Clients</h2>
+          <h1>Dashboard</h1>
           <Wrapper
             customstyle={css`
-              display: flex;
-
-              width: 100%;
+              ${dashboard_projects.length > 3 &&
+              css`
+                overflow-y: scroll;
+                overflow-x: hidden;
+                padding: 0 0 0 8px;
+                height: 500px;
+              `}
             `}
           >
-            {dashboard_clients
-              .filter((client, index) => index > dashboard_clients.length - 4)
-              .map((item) => (
-                <Card key={item.id} {...{ item }} />
-              ))}
-            {dashboard_clients.length === 0 && <p>You don't have contacts </p>}
+            {dashboard_projects.map((item: Init) => (
+              <Link
+                key={item.id}
+                href={{
+                  pathname: '/dashboard/view/project/[id]',
+                  query: { id: item.id },
+                }}
+                passHref
+              >
+                <a>
+                  <Information
+                    item={{ title: item.title, text: item.description }}
+                    styles={{
+                      width: '300px',
+                      padding: '10px',
+                      margin: '10px 0',
+                      justifycontent: 'flex-start',
+                      alignitems: 'stretch',
+                    }}
+                  />
+                </a>
+              </Link>
+            ))}
+          </Wrapper>
+          {show ? (
+            <>
+              <Wrapper
+                customstyle={css`
+                  width: 100%;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                `}
+              >
+                <h2>Add new project</h2>
+                <Button
+                  props={{ type: 'default', style: { boxshadow: '0px' } }}
+                  click={() => setShow(false)}
+                >
+                  <SvgDynamic href="/icons/cancel" />
+                </Button>
+              </Wrapper>
+              <Formk
+                arr={dataFormProject}
+                submit={(values, resetForm) => {
+                  dispatch({
+                    type: 'ADD_PROJECT',
+                    payload: {
+                      id: idAssignment(40),
+                      title: values.title,
+                      description: values.description,
+                    },
+                  })
+                  setShow(false)
+                  resetForm()
+                }}
+              />
+            </>
+          ) : (
+            <Button
+              props={{
+                type: 'add',
+                style: { boxshadow: '0px' },
+              }}
+              click={() => setShow(!show)}
+            >
+              Add Project
+            </Button>
+          )}
+        </Wrapper>
+        <Wrapper>
+          <h1>Welcome {user.user.username}!</h1>
+          <Wrapper>
+            <h2>About</h2>
+            <Wrapper>
+              <h3>Active Projects</h3>
+              <Wrapper
+                customstyle={css`
+                  display: flex;
+                  width: 350px;
+                `}
+              >
+                <Doughnut data={data} />
+                <Radar data={data2} />
+                <PolarArea data={data} />
+              </Wrapper>
+            </Wrapper>
           </Wrapper>
         </Wrapper>
       </Wrapper>
-    </Wrapper>
+      <Wrapper>
+        <h2>Updated Clients</h2>
+        <Wrapper
+          customstyle={css`
+            display: flex;
+
+            width: 100%;
+          `}
+        >
+          {dashboard_clients
+            .filter((client, index) => index > dashboard_clients.length - 4)
+            .map((item) => (
+              <Card key={item.id} {...{ item }} />
+            ))}
+          {dashboard_clients.length === 0 && <p>You don't have contacts </p>}
+        </Wrapper>
+      </Wrapper>
+    </Div>
   )
 }
 

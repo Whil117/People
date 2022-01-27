@@ -14,7 +14,7 @@ const Card: FC<IProps> = ({ item }) => {
       styles={{
         flexdirection: 'row',
         alignitems: 'center',
-        justifycontent: 'space-between',
+        justifycontent: 'flex-start',
         width: '275px',
         padding: '10px',
         margin: '10px',
@@ -30,6 +30,7 @@ const Card: FC<IProps> = ({ item }) => {
       <Information
         item={{ title: item.name, text: item.address }}
         styles={{
+          margin: '0px 10px',
           boxshadow: 'aaa',
           justifycontent: 'flex-start',
           alignitems: 'stretch',

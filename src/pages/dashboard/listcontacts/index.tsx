@@ -1,18 +1,18 @@
 import { baseUrl } from '@Assets/backend'
-import AtomImage from '@Atoms/Image'
 import SvgDynamic from '@Atoms/Svg'
+import Card from '@Components/Contact'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
-import { ButtonForm, Wrapper } from '@Styles/global'
+import { Wrapper } from '@Styles/global'
 import { ContactItem } from '@Styles/pages/listcontacts'
 import { AddTodoFormInput } from '@Styles/pages/Login'
 import { Reducers } from '@Types/types'
+import Button from '@Whil/components/Button'
 import axios from 'axios'
 import { Form, Formik } from 'formik'
 import Cookies from 'js-cookie'
 import { NextPageContext } from 'next'
 import Link from 'next/link'
-import Router from 'next/router'
 import { FC, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -40,7 +40,6 @@ interface IProps {
 
 const ListContacts: FC<IProps> = ({ contacts }) => {
   const [list, setList] = useState<ContactItem[]>(contacts?.clients)
-  const token = Cookies.get('token')
   const resolveAfter3Sec = new Promise((resolve) => setTimeout(resolve, 3000))
 
   const dashboard_clients = useSelector(
@@ -60,7 +59,7 @@ const ListContacts: FC<IProps> = ({ contacts }) => {
           },
           {
             headers: {
-              token: token || '',
+              token: Cookies.get('token') || '',
             },
           }
         )
@@ -71,7 +70,6 @@ const ListContacts: FC<IProps> = ({ contacts }) => {
               success: 'Successful 👌',
               error: 'Error 🤯',
             })
-            Router.reload()
           }
         })
     } catch (error) {}
@@ -123,44 +121,16 @@ const ListContacts: FC<IProps> = ({ contacts }) => {
                     }}
                     passHref
                   >
-                    <ContactItem
-                      key={item.id}
-                      customstyle={css`
-                        cursor: normal;
-                        width: 411px;
-                        padding: 10px;
-                        margin: 10px 0;
-                        h3 {
-                          margin: 10px 0;
-                        }
-                      `}
-                    >
-                      <AtomImage
-                        src={item.image}
-                        width={90}
-                        height={90}
-                        alt={item.name}
-                      />
-                      <Wrapper
-                        customstyle={css`
-                          margin-left: 20px;
-                        `}
-                      >
-                        <h4>{item.name.slice(0, 25)}</h4>
-                        <p>{item.address.slice(0, 38)}</p>
-                      </Wrapper>
-                    </ContactItem>
+                    <a>
+                      <Card item={item} />
+                    </a>
                   </Link>
-                  <ButtonForm
-                    customstyle={css`
-                      border: none;
-                      cursor: pointer;
-                      background: transparent;
-                    `}
-                    onClick={() => handleDeleteListItem(item.id)}
+                  <Button
+                    props={{ type: 'default' }}
+                    click={() => handleDeleteListItem(item.id)}
                   >
                     <SvgDynamic href="/icons/trash" />
-                  </ButtonForm>
+                  </Button>
                 </Wrapper>
               ))}
           </FormClient>

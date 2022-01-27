@@ -13,16 +13,18 @@ export const init: Client[] = []
 export type Dashboard_clients = ReturnType<typeof reducer>
 
 const TypeReducers = {
-  UPDATE_CLIENTS: (_ = init, action: Action) => {
+  UPDATE_CLIENTS: (_ = init, action: { payload: Client[] }) => {
     return action.payload
+  },
+  DELETE_CLIENT: (state = init, action: { payload: { id: string } }) => {
+    return state.filter((client) => client.id !== action.payload.id)
   },
 }
 
 type Action = {
   type: keyof typeof TypeReducers
-  payload: Client[]
+  payload: any
 }
-
 export const reducer = (state = init, action: Action) => {
   const { type } = action
   const handler = TypeReducers[type]
