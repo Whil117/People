@@ -1,12 +1,14 @@
 import SvgDynamic from '@Atoms/Svg'
+import Information from '@Components/Contact/Information'
 import FormColumnTask from '@Components/FormColumnTask/FormColumnTask'
 import { css } from '@emotion/react'
 import { Column, Init } from '@Redux/reducers/dashboard/reducer'
 import { ColumnStyled } from '@Styles/components/Column'
 import { TaskNumber } from '@Styles/components/Task'
-import { ButtonForm, Wrapper } from '@Styles/global'
+import { Wrapper } from '@Styles/global'
 import { Reducers } from '@Types/types'
 import idAssignment from '@Utils/id'
+import Button from '@Whil/components/Button'
 import { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -36,8 +38,8 @@ const ColumnProject: FC<IProps> = ({ column, id, index }) => {
         `}
       >
         <h3>{column.column_label}</h3>
-        <ButtonForm
-          onClick={() =>
+        <Button
+          click={() =>
             dispatch({
               type: 'DELETE_COLUMN',
               payload: {
@@ -46,13 +48,10 @@ const ColumnProject: FC<IProps> = ({ column, id, index }) => {
               },
             })
           }
-          customstyle={css`
-            background: none;
-            border: none;
-          `}
+          props={{ type: 'default' }}
         >
           <SvgDynamic href="/icons/cancel" />
-        </ButtonForm>
+        </Button>
       </Wrapper>
 
       {tasks &&
@@ -74,14 +73,19 @@ const ColumnProject: FC<IProps> = ({ column, id, index }) => {
                 align-items: center;
               `}
             >
-              <div>
-                <h4 key={item?.column_task_id}>{item?.column_task_title}</h4>
-                <p>{item?.column_task_description}</p>
-              </div>
+              <Information
+                {...{
+                  item: {
+                    title: item?.column_task_title,
+                    text: item?.column_task_description,
+                  },
+                }}
+              />
+
               <TaskNumber>{item?.column_task_value}</TaskNumber>
             </Wrapper>
-            <ButtonForm
-              onClick={() =>
+            <Button
+              click={() =>
                 dispatch({
                   type: 'DELETE_COLUMN_TASK',
                   payload: {
@@ -91,13 +95,10 @@ const ColumnProject: FC<IProps> = ({ column, id, index }) => {
                   },
                 })
               }
-              customstyle={css`
-                background: none;
-                border: none;
-              `}
+              props={{ type: 'default' }}
             >
               <SvgDynamic href="/icons/cancel" />
-            </ButtonForm>
+            </Button>
           </Wrapper>
         ))}
       <FormColumnTask

@@ -77,7 +77,7 @@ const ViewChat: FC<IProps> = ({ id }) => {
           justify-content: space-between;
           align-items: flex-end;
           width: 68%;
-          ${dashboard_chats.length > 4 &&
+          ${dashboard_chats?.length > 4 &&
           css`
             height: 68%;
             overflow-y: scroll;
@@ -85,7 +85,7 @@ const ViewChat: FC<IProps> = ({ id }) => {
           `}
         `}
       >
-        {dashboard_chats.map((item) => (
+        {dashboard_chats?.map((item) => (
           <ChatMessage key={item.chat_id}>
             <p>{item.chat_message}</p>
           </ChatMessage>

@@ -11,6 +11,7 @@ export const Button = styled.button<ButtonProps>`
   ${({ props }) =>
     props
       ? css`
+          width: ${props?.style?.width || 'auto'};
           margin: ${props?.style?.margin || '10px'};
           color: ${props?.style?.color || props.type === 'default'
             ? '#000'
@@ -26,18 +27,21 @@ export const Button = styled.button<ButtonProps>`
               ? 'rgba(0, 0, 0, 0.25)'
               : colors[props.type || '#fff']};
           &:hover {
+            box-shadow: none;
             box-shadow: 0px 0px 4px
               ${props.type === 'default'
                 ? 'rgba(0, 0, 0, 0.25)'
                 : colors[props.type] || '#fff'};
           }
           &:active {
+            box-shadow: none;
             background: ${colors[props.type] || '#fff'};
             box-shadow: 0px 0px 8px
               ${props.type === 'default'
                 ? 'rgba(0, 0, 0, 0.25)'
                 : colors[props.type] || '#fff'};
           }
+          box-shadow: none;
         `
       : ''}
 `

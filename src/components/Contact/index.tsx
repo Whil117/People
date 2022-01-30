@@ -15,7 +15,7 @@ const Card: FC<IProps> = ({ item }) => {
         flexdirection: 'row',
         alignitems: 'center',
         justifycontent: 'flex-start',
-        width: '275px',
+        width: '300px',
         padding: '10px',
         margin: '10px',
         borderRadius: '10px',

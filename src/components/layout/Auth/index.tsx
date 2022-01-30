@@ -1,5 +1,6 @@
 import Redirect from '@Components/Redirect'
 import { Reducers } from '@Types/types'
+// import Cookies from 'js-cookie'
 import { NextRouter } from 'next/router'
 import { FC } from 'react'
 import { useSelector } from 'react-redux'
@@ -24,12 +25,8 @@ const AuthLayout: FC<IProps> = ({ children, router }) => {
   const authethicated = useSelector(
     (state: Reducers) => state.user.authenticated
   )
-
-  if (
-    !authethicated &&
-    protectedRoutes.includes(router.pathname) &&
-    !invalidPages.includes(router.pathname)
-  ) {
+  // const dispatch = useDispatch()
+  if (!authethicated && protectedRoutes.includes(router.pathname)) {
     return <Redirect {...{ router }} href="/" />
   } else if (authethicated && invalidPages.includes(router.pathname)) {
     return <Redirect {...{ router }} href="/dashboard" />

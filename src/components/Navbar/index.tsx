@@ -40,7 +40,7 @@ const options = [
     path: '/dashboard/listcontacts',
   },
   {
-    name: 'React Email',
+    name: 'Send a Email',
     icon: 'email',
     path: '/dashboard/messages',
   },

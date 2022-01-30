@@ -49,6 +49,7 @@ const ListContacts: FC<IProps> = ({ contacts }) => {
   const dispatch = useDispatch()
 
   const handleDeleteListItem = async (id: string) => {
+    dispatch({ type: 'DELETE_CLIENT', payload: { id } })
     setList(list.filter((item) => item.id !== id))
     try {
       await axios

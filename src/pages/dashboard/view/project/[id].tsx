@@ -1,13 +1,13 @@
-import AtomImage from '@Atoms/Image'
 import SvgDynamic from '@Atoms/Svg'
 import ColumnProject from '@Components/Column'
+import Card from '@Components/Contact'
 import FormColumn from '@Components/FormColumn'
 import { css } from '@emotion/react'
 import type { Column, Init } from '@Redux/reducers/dashboard/reducer'
-import { ButtonForm, Wrapper } from '@Styles/global'
-import { ContactItem } from '@Styles/pages/listcontacts'
+import { Wrapper } from '@Styles/global'
 import { Reducers } from '@Types/types'
 import idAssignment from '@Utils/id'
+import Button from '@Whil/components/Button'
 import {
   ArcElement,
   Chart as ChartJS,
@@ -21,7 +21,6 @@ import {
 import { NextPageContext } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-
 import { FC, useState } from 'react'
 import { Pie, Radar } from 'react-chartjs-2'
 import { useDispatch, useSelector } from 'react-redux'
@@ -105,6 +104,7 @@ const Project: FC<IProps> = ({ id }) => {
       <Wrapper>
         <h2>Add your sales</h2>
         <p>create your columns and organize your sales</p>
+
         <Wrapper
           customstyle={css`
             display: flex;
@@ -184,40 +184,11 @@ const Project: FC<IProps> = ({ id }) => {
                       align-items: center;
                     `}
                   >
-                    <ContactItem
-                      key={item?.id}
-                      customstyle={css`
-                        cursor: normal;
-                        width: 355px;
-                        padding: 10px;
-                        margin: 10px 0;
-                        h4 {
-                          margin: 10px 0;
-                        }
-                      `}
-                    >
-                      <AtomImage
-                        src={item?.image || 'https://via.placeholder.com/150'}
-                        width={90}
-                        height={90}
-                        alt={item?.name}
-                      />
-                      <Wrapper
-                        customstyle={css`
-                          display: flex;
-                          flex-direction: column;
-                          align-items: flex-start;
-                          margin-left: 20px;
-                        `}
-                      >
-                        <h4>{item?.name?.slice(0, 25)}</h4>
-                        <p>{item?.address?.slice(0, 30)}</p>
-                      </Wrapper>
-                    </ContactItem>
+                    <Card {...{ item }} />
                   </Wrapper>
                 </Link>
-                <ButtonForm
-                  onClick={() => {
+                <Button
+                  click={() => {
                     dispatch({
                       type: 'DELETE_CLIENT_PROJECT',
                       payload: {
@@ -226,14 +197,10 @@ const Project: FC<IProps> = ({ id }) => {
                       },
                     })
                   }}
-                  customstyle={css`
-                    cursor: pointer;
-                    border: none;
-                    background: transparent;
-                  `}
+                  props={{ type: 'default' }}
                 >
                   <SvgDynamic href="/icons/cancel" />
-                </ButtonForm>
+                </Button>
               </Wrapper>
             ))}
         </Wrapper>
@@ -262,16 +229,9 @@ const Project: FC<IProps> = ({ id }) => {
               <p>List Clients</p>
             </div>
             <div>
-              <ButtonForm
-                onClick={() => setShow(!show)}
-                customstyle={css`
-                  cursor: pointer;
-                  border: none;
-                  background: transparent;
-                `}
-              >
+              <Button click={() => setShow(!show)} props={{ type: 'default' }}>
                 <SvgDynamic href="/icons/cancel" />
-              </ButtonForm>
+              </Button>
             </div>
           </Wrapper>
 
@@ -280,15 +240,10 @@ const Project: FC<IProps> = ({ id }) => {
               (client) => !dashboard_projects?.clients?.includes(client.id)
             )
             .map((item) => (
-              <ButtonForm
+              <Button
                 key={item.id}
-                customstyle={css`
-                  border: none;
-                  background: none;
-                  margin: 10px 0;
-                  padding: 0;
-                `}
-                onClick={() => {
+                props={{ type: 'default' }}
+                click={() => {
                   setShow(!show)
                   dispatch({
                     type: 'ADD_CLIENT_PROJECT',
@@ -299,77 +254,21 @@ const Project: FC<IProps> = ({ id }) => {
                   })
                 }}
               >
-                <ContactItem
-                  key={item?.id}
-                  customstyle={css`
-                    margin: 0;
-                    cursor: normal;
-                    width: auto;
-                    padding: 10px;
-                    h3 {
-                      margin: 10px 0;
-                    }
-                  `}
-                >
-                  <AtomImage
-                    src={item?.image || 'https://via.placeholder.com/150'}
-                    width={90}
-                    height={90}
-                    alt={item?.name}
-                  />
-                  <Wrapper
-                    customstyle={css`
-                      display: flex;
-                      flex-direction: column;
-                      align-items: flex-start;
-                      margin-left: 20px;
-                      h4 {
-                        margin: 10px 0;
-                      }
-                    `}
-                  >
-                    <h4>{item?.name?.slice(0, 25)}</h4>
-                    <p>{item?.address?.slice(0, 30)}</p>
-                  </Wrapper>
-                </ContactItem>
-              </ButtonForm>
+                <Card {...{ item }} />
+              </Button>
             ))}
         </Wrapper>
       ) : (
-        <ButtonForm
-          customstyle={css`
-            border: none;
-            width: 400px;
-            height: 35px;
-            background: #1e90ff;
-            color: white;
-            font-weight: 600;
-            box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
-            border-radius: 5px;
-            cursor: pointer;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          `}
-          onClick={() => setShow(!show)}
+        <Button
+          props={{ type: 'add', style: { width: '380px' } }}
+          click={() => setShow(!show)}
         >
           Add Client
-        </ButtonForm>
+        </Button>
       )}
-      <ButtonForm
-        customstyle={css`
-          color: #fff;
-          padding: 10px;
-          font-weight: bold;
-          border-radius: 10px;
-          font-size: 1rem;
-          background: #dd2d2d;
-          border: none;
-          width: 130px;
-          margin: 20px 0;
-        `}
-        onClick={() => {
+      <Button
+        props={{ type: 'danger', style: { width: '380px' } }}
+        click={() => {
           dispatch({
             type: 'DELETE_PROJECT',
             payload: id,
@@ -378,7 +277,7 @@ const Project: FC<IProps> = ({ id }) => {
         }}
       >
         Delete project
-      </ButtonForm>
+      </Button>
     </Wrapper>
   )
 }

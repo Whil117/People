@@ -3,6 +3,7 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { ButtonForm, LabelWrapper } from '@Styles/global'
 import { AddTodoFormError, AddTodoFormInput } from '@Styles/pages/Login'
+import Button from '@Whil/components/Button'
 import { Form, Formik } from 'formik'
 import { Dispatch, FC, SetStateAction, useState } from 'react'
 
@@ -80,40 +81,14 @@ const FormColumn: FC<IProps> = (props) => {
               {errors.column_color && touched.column_color && (
                 <AddTodoFormError>{errors.column_color}</AddTodoFormError>
               )}
-              <ButtonForm
-                customstyle={css`
-                  border: none;
-                  width: 100%;
-                  height: 35px;
-                  background: #1e90ff;
-                  color: white;
-                  font-weight: 600;
-                  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
-                  border-radius: 5px;
-                  width: 100%;
-                `}
-              >
-                Add Column
-              </ButtonForm>
+              <Button props={{ type: 'submit' }}>Add Column</Button>
             </FormClient>
           )}
         </Formik>
       ) : (
-        <ButtonForm
-          customstyle={css`
-            border: none;
-            width: 200px;
-            height: 35px;
-            background: #1e90ff;
-            color: white;
-            font-weight: 600;
-            box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
-            border-radius: 5px;
-          `}
-          onClick={() => setShow(!show)}
-        >
+        <Button props={{ type: 'submit' }} click={() => setShow(!show)}>
           Add Column
-        </ButtonForm>
+        </Button>
       )}
     </>
   )
